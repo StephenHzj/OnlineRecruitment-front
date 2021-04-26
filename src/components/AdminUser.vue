@@ -30,7 +30,6 @@
               <el-image
                   class="table-td-thumb"
                   :src="getImgUrl(scope.row.userLogo)"
-                  :preview-src-list="getImgUrl(scope.row.userLogo)"
               ></el-image>
 <!--              </div>-->
             </template>
@@ -121,7 +120,14 @@
 
       //获取图片URL
       getImgUrl (img) {
-        return require("@/assets/logo/user/" + img);
+
+        try {
+          let url = require("@/assets/logo/user/" + img);
+          return url;
+        }catch (e){
+          return require("@/assets/logo/user/default.jpg" );
+        }
+
       },
     }
   };

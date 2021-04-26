@@ -83,7 +83,7 @@ export default {
       imageUrl:"",
       rules: {
         companyTel: [{
-          pattern: /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/,
+         // pattern: /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/,
           required: true, message: "请输入正确手机号码", trigger: "blur"
         }],
         companyName: [{
@@ -99,10 +99,10 @@ export default {
     //注册用户
     register() {
       userApi.register("/admin/company/register", this.company).then((res) =>{
-        if (res === "注册成功") {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
+        if (res.code === 200) {
+          this.$message.success("注册成功")
+        } else if(res.code === 503){
+          this.$message.error("公司代码以存在请更换")
           return false;
         }
       })
@@ -116,7 +116,7 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(this.imageUrl);
       console.log(file.name)
-      this.company.companyLogo =res
+      this.company.companyLogo =res.data
     },
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;

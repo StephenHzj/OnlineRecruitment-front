@@ -99,9 +99,11 @@ export default {
     },
     // 获取用户数据
     getHrData() {
-      adminApi.getAllHrs().then(res => {
+      adminApi.getAllHrs(this.page).then(res => {
         console.log(res);
-        this.tableData = res.hrs;
+        this.tableData = res.data.content;
+        this.page.totalElement = res.data.totalElements;
+        this.page.pageSize = res.data.pageable.pageSize;
       });
     },
     // 删除操作
