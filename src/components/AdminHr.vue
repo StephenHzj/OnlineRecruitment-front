@@ -9,10 +9,6 @@
     </div>
 
     <div class="container">
-      <div class="handle-box">
-        <el-input v-model="query.name" placeholder="账号" class="handle-input mr10"></el-input>
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      </div>
       <el-table
           :data="tableData"
           border
@@ -22,17 +18,16 @@
       >
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="hrId" label="ID" width="55" align="center"></el-table-column>
-        <el-table-column prop="company.companyName" label="所属公司"  align="center"></el-table-column>
+        <el-table-column prop="companyName" label="所属公司"  align="center"></el-table-column>
         <el-table-column prop="hrName" label="姓名"></el-table-column>
         <el-table-column prop="hrTel" label="电话" ></el-table-column>
         <el-table-column prop="hrEmail" label="邮箱"></el-table-column>
         //头像
-        <el-table-column label="头像" align="center">
+        <el-table-column prop="hrLogo" label="头像" align="center">
           <template slot-scope="scope">
             <el-image
                 class="table-td-thumb"
-                :src="scope.row.userLogo"
-                :preview-src-list="[scope.row.userLogo]"
+                :src="getImgUrl(scope.row.hrLogo)"
             ></el-image>
           </template>
         </el-table-column>
@@ -65,12 +60,10 @@
 <script>
 import * as adminApi from "../api/admin";
 export default {
-  name: 'basetable',
+  name: 'AdminHr',
   data() {
     return {
       query: {
-        address: '',
-        name: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -99,11 +92,8 @@ export default {
     },
     // 获取用户数据
     getHrData() {
-      adminApi.getAllHrs(this.page).then(res => {
-        console.log(res);
-        this.tableData = res.data.content;
-        this.page.totalElement = res.data.totalElements;
-        this.page.pageSize = res.data.pageable.pageSize;
+      adminApi.getAllHrs().then(res => {
+        this.tableData = res.data;
       });
     },
     // 删除操作
@@ -126,7 +116,18 @@ export default {
     handlePageChange(val) {
       this.$set(this.query, 'pageIndex', val);
       this.getData();
-    }
+    },
+    //获取图片URL
+    getImgUrl (img) {
+
+      try {
+        let url = require("@/assets/logo/user/" + img);
+        return url;
+      }catch (e){
+        return require("@/assets/logo/user/default.jpg" );
+      }
+
+    },
   }
 };
 </script>

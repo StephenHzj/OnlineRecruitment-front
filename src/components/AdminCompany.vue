@@ -23,12 +23,11 @@
         <el-table-column prop="companyLocation" label="地点"></el-table-column>
 
         //头像
-        <el-table-column prop="companyLocation" label="Logo" align="center">
+        <el-table-column prop="companyLogo" label="Logo" align="center">
           <template slot-scope="scope">
             <el-image
                 class="table-td-thumb"
-                :src="scope.row.userLogo"
-                :preview-src-list="[scope.row.userLogo]"
+                :src="getImgUrl(scope.row.companyLogo)"
             ></el-image>
           </template>
         </el-table-column>
@@ -112,7 +111,7 @@
 <script>
 import * as adminApi from "../api/admin";
 export default {
-  name: 'basetable',
+  name: 'AdminCompany',
   data() {
     return {
       page: {
@@ -145,9 +144,9 @@ export default {
     getCompanyData() {
       adminApi.getPageCompanies(this.page).then(res => {
         console.log(res);
-        this.company = res.content;
-        this.page.totalElements = res.totalElements;
-        this.page.pageSize = res.pageable.pageSize;
+        this.company = res.data.content;
+        this.page.totalElements = res.data.totalElements;
+        this.page.pageSize = res.data.pageable.pageSize;
       });
     },
     // 删除操作
@@ -179,6 +178,17 @@ export default {
 
     filterTag(value, row) {
       return row.companyState === value;
+    },
+    //获取图片URL
+    getImgUrl (img) {
+
+      try {
+        let url = require("@/assets/logo/user/" + img);
+        return url;
+      }catch (e){
+        return require("@/assets/logo/user/default.jpg" );
+      }
+
     },
 
   }
