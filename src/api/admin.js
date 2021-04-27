@@ -15,6 +15,10 @@ export const auditCompany = (companyCode) => {
     return http.requestQuickGet('/api/admin/company/audit/'+companyCode)
 }
 
+export const disableJob = (id) => {
+    return http.requestQuickGet('/api/admin/job/disable/'+id)
+}
+
 export const getAllUsers =() => {
     return request({
         url: '/api/admin/user',

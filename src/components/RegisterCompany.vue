@@ -73,7 +73,7 @@ export default {
         companyTel:"",
         companyEmail: "",
         companyProfile:"",
-        companyState:"",
+        companyState:0,
         companyAdmin:""
       },
       options: regionData,

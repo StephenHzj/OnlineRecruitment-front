@@ -10,6 +10,7 @@ import UserRegister from "@/components/RegisterUser";
 import HrRegister from "@/components/RegisterHr";
 import CompanyRegister from "@/components/RegisterCompany";
 import AdminLogin from "@/components/AdminLogin";
+import AdminJob from "@/components/AdminJob";
 Vue.use(Router)
 
 export default new Router({
@@ -44,6 +45,14 @@ export default new Router({
                         title: '管理公司'
                     },
                     component: AdminCompany
+                },
+                {
+                    path: "/adminJob",
+                    name: "管理岗位",
+                    meta: {
+                        title: '管理岗位'
+                    },
+                    component: AdminJob
                 },
                 {
                     path: "/registerCompany",

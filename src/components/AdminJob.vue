@@ -7,40 +7,50 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-
     <div class="container">
-      <div class="handle-box">
-      </div>
       <el-table
-          :data="tableData"
+          :data="job"
           border
           class="table"
           ref="multipleTable"
           header-cell-class-name="table-header"
       >
-        <el-table-column prop="userId" label="ID" width="55" align="center"></el-table-column>
-        <el-table-column prop="userTel" label="账号"  align="center"></el-table-column>
-        <el-table-column prop="userName" label="用户名"></el-table-column>
-        <el-table-column prop="userGender" label="性别" :formatter="genderFormat"></el-table-column>
-        <el-table-column prop="userEmail" label="用户邮箱"></el-table-column>
-        //头像
-        <el-table-column label="头像" align="center">
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="jobId" label="ID" width="55" align="center"></el-table-column>
+        <el-table-column prop="jobName" label="岗位"  align="center"></el-table-column>
+        <el-table-column prop="companyName" label="公司名称"></el-table-column>
+        <el-table-column prop="location" label="工作地点"></el-table-column>
+        <el-table-column prop="quantity" label="所需人数"></el-table-column>
+        <el-table-column prop="updateDate" label="发布时间"></el-table-column>
+
+        <el-table-column
+            prop="jobState"
+            label="岗位状态"
+            align="center"
+            :filters="[{ text: '发布中', value: 1 }, { text: '禁用', value: 0 },{ text: '招聘结束', value: -1 }]"
+            :filter-method="filterTag"
+            filter-placement="bottom-end">
           <template slot-scope="scope">
-            <el-image
-                class="table-td-thumb"
-                :src="scope.row.userLogo"
-                :preview-src-list="[scope.row.userLogo]"
-            ></el-image>
+            <el-tag
+                :type="scope.row.jobState === 1?'success':(scope.row.jobState=== 0?'danger':'info')"
+            >{{scope.row.jobState === 1? '发布中' : (scope.row.jobState === 0 ? '禁用':'招聘结束')}}</el-tag>
           </template>
         </el-table-column>
+
+
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button
                 type="text"
+                icon="el-icon-edit"
+                @click="handleEdit(scope.$index, scope.row)"
+            >详情</el-button>
+            <el-button
+                type="text"
                 icon="el-icon-delete"
                 class="red"
-                @click="handleDelete(scope.$index, scope.row.userId)"
-            >删除</el-button>
+                @click="disableJob(scope.$index, scope.row)"
+            >禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,12 +59,46 @@
         <el-pagination
             background
             layout="total, prev, pager, next"
-            :current-page="page.pageIndex"
-            :page-size="page.pageSize"
-            :total="page.totalElement"
+            :current-page="query.pageIndex"
+            :page-size="query.pageSize"
+            :total="pageTotal"
             @current-change="handlePageChange"
         ></el-pagination>
       </div>
+
+      <!-- 编辑弹出框 -->
+      <el-dialog title="岗位详情:" :visible.sync="editVisible" width="30%">
+        <el-form ref="form" :data="detailInfo"  label-width="100px">
+          <el-form-item label="岗位名称:">
+            <span>{{detailInfo.jobName}}</span>
+          </el-form-item>
+          <el-form-item label="公司名称:">
+            <span>{{detailInfo.companyName}}</span>
+          </el-form-item>
+          <el-form-item label="薪资:">
+            <span>{{detailInfo.salary}}</span>
+          </el-form-item>
+          <el-form-item label="工作地点:">
+            <span>{{detailInfo.location}}</span>
+          </el-form-item>
+          <el-form-item label="工作介绍:">
+            <span>{{detailInfo.introduction}}</span>
+          </el-form-item>
+          <el-form-item label="工作要求:">
+            <span>{{detailInfo.requirement}}</span>
+          </el-form-item>
+          <el-form-item label="学历要求:">
+            <span >{{detailInfo.degree}}</span>
+          </el-form-item>
+          <el-form-item label="需求人数:">
+            <span >{{detailInfo.quantity}}</span>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+                 <el-button type="primary" @click="editVisible = false">确 定</el-button>
+            </span>
+      </el-dialog>
+
     </div>
   </div>
 </template>
@@ -62,19 +106,17 @@
 <script>
 import * as adminApi from "../api/admin";
 export default {
-  name: 'basetable',
+  name: 'AdminJob',
   data() {
     return {
-      page: {
-        pageIndex: 1, //当前页
-        pageSize: 2, //每页大小
-        totalElement: 10, //总共元素
+      query: {
+        pageIndex: 1,
+        pageSize: 10
       },
-      tableData: [],
-      multipleSelection: [],
-      delList: [],
+      job: [],
       editVisible: false,
-      form: {},
+      pageTotal: 0,
+      detailInfo: {},
       idx: -1,
       id: -1
     };
@@ -83,44 +125,57 @@ export default {
     this.getJobData();
   },
   methods: {
-    genderFormat(row, column){
-      if (row.userGender === 0) {
-        return '女'
-      } else  {
-        return '男'
-      }
 
-    },
     // 获取用户数据
     getJobData() {
       adminApi.getAllJobs().then(res => {
-        this.tableData = res.jobs; //用户数据
-        this.page.totalElement = res.totalElements;
-        this.page.pageSize = res.pageable.pageSize;
+        this.job = res.data;
       });
-    },
-    // 删除操作
-    handleDelete(index, userId) {
-      // 二次确认删除
-      this.$confirm('确定要删除吗？', '提示', {
-        type: 'warning'
-      }).then(() => {
-        adminApi.deleteUser(userId).then((res) =>{
-          if(res === '删除成功'){
-            this.$message.success('删除成功');
-            this.tableData.splice(index, 1);
-          }else
-            this.$message.error("error")
-        })
-      }).catch(() => {});
     },
 
     // 分页导航
     handlePageChange(val) {
-      this.$set(this.page, 'pageIndex', val);
-      console.log(val)
-      this.getUserData();
-    }
+      this.$set(this.query, 'pageIndex', val);
+      this.getData();
+    },
+
+    disableJob(index,row) {
+      // 二次确认删除
+      this.$confirm('确定禁用该岗位吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        if(row.jobState === -1){
+          this.$message.warning("招聘已结束,无需审核")
+        }else {
+        adminApi.disableJob(row.jobId).then((res) =>{
+          if(res.code === 200){
+            if(row.jobState === 1) {
+              row.jobState = 0;
+              this.$set(this.job,index,row);
+              this.$message.error("禁用成功");
+            }
+            else{
+              row.jobState = 1;
+              this.$set(this.job,index,row);
+              this.$message.success("启用成功");
+            }
+          }else if(res.code === 503)
+            this.$message.error(res.message);
+          else
+            this.$message.error("error")
+        })
+      }}).catch(() => {});
+    },
+
+    // 编辑操作
+    handleEdit(index, row) {
+      this.idx = index;
+      this.detailInfo = row;
+      this.editVisible = true;
+    },
+    filterTag(value, row) {
+      return row.jobState === value;
+    },
   }
 };
 </script>

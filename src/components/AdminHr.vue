@@ -37,7 +37,7 @@
                 type="text"
                 icon="el-icon-delete"
                 class="red"
-                @click="handleDelete(scope.$index, scope.row.hrId)"
+                @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -82,28 +82,21 @@ export default {
     this.getHrData();
   },
   methods: {
-    companyNameFormat(row, column){
-      if (row.companyId === 0) {
-        return '女'
-      } else  {
-        return '男'
-      }
 
-    },
-    // 获取用户数据
+    // 获取HR数据
     getHrData() {
       adminApi.getAllHrs().then(res => {
         this.tableData = res.data;
       });
     },
     // 删除操作
-    handleDelete(index, hrId) {
+    handleDelete(index, row) {
       // 二次确认删除
       this.$confirm('确定要删除吗？', '提示', {
         type: 'warning'
       }).then(() => {
-        adminApi.deleteHr(hrId).then((res) =>{
-          if(res === '删除成功'){
+        adminApi.deleteHr(row.hrId).then((res) =>{
+          if(res.code === 200){
             this.$message.success('删除成功');
             this.tableData.splice(index, 1);
           }else

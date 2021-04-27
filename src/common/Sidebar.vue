@@ -71,6 +71,11 @@ export default {
                     index: 'adminCompany',
                     title: '管理公司'
                 },
+              {
+                icon: 'el-icon-lx-copy',
+                index: 'adminJob',
+                title: '管理岗位'
+              },
                 {
                   icon: 'el-icon-lx-copy',
                   index: 'registerCompany',

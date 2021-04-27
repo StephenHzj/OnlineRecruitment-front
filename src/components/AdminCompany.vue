@@ -57,35 +57,35 @@
                 type="text"
                 icon="el-icon-delete"
                 class="red"
-                @click="auditCompany(scope.$index, scope.row.companyCode)"
+                @click="auditCompany(scope.$index, scope.row)"
             >审核</el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <!-- 编辑弹出框 -->
-      <el-dialog title="公司详情" :visible.sync="editVisible" width="30%">
-        <el-form ref="form" :model="company" label-width="70px">
-          <el-form-item label="公司ID">
-            <span>{{company.companyId}}</span>
+      <el-dialog title="公司详情:" :visible.sync="editVisible" width="30%">
+        <el-form ref="form" :data="detailInfo" label-width="100px">
+          <el-form-item label="公司ID:">
+            <span>{{detailInfo.companyId}}</span>
           </el-form-item>
-          <el-form-item label="公司名称">
-            <span>{{company.companyName}}</span>
+          <el-form-item label="公司名称:">
+            <span>{{detailInfo.companyName}}</span>
           </el-form-item>
-          <el-form-item label="公司代码">
-            <span>{{company.companyCode}}</span>
+          <el-form-item label="公司代码:">
+            <span>{{detailInfo.companyCode}}</span>
           </el-form-item>
-          <el-form-item label="公司地点">
-            <span>{{company.companyLocation}}</span>
+          <el-form-item label="公司地点:">
+            <span>{{detailInfo.companyLocation}}</span>
           </el-form-item>
-          <el-form-item label="公司电话">
-            <span>{{company.companyTel}}</span>
+          <el-form-item label="公司电话:">
+            <span>{{detailInfo.companyTel}}</span>
           </el-form-item>
-          <el-form-item label="公司邮箱">
-            <span>{{company.companyEmail}}</span>
+          <el-form-item label="公司邮箱:">
+            <span>{{detailInfo.companyEmail}}</span>
           </el-form-item>
-          <el-form-item label="公司简介">
-            <span >{{company.companyProfile}}</span>
+          <el-form-item label="公司简介:">
+            <span >{{detailInfo.companyProfile}}</span>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -123,41 +123,42 @@ export default {
       url:'',
       company: [],
       editVisible: false,
-      form: {},
-      idx: -1,
-      id: -1
+      detailInfo: {},
+     // idx: -1,
+     //  id: -1
     };
   },
   created() {
     this.getCompanyData();
   },
   methods: {
-    stateFormat(row){
-      if (row === 0) {
-        return '已通过'
-      } else  {
-        return '未审核'
-      }
 
-    },
     // 获取用户数据
     getCompanyData() {
       adminApi.getPageCompanies(this.page).then(res => {
-        console.log(res);
         this.company = res.data.content;
+        console.log(this.company)
         this.page.totalElements = res.data.totalElements;
         this.page.pageSize = res.data.pageable.pageSize;
       });
     },
     // 删除操作
-    auditCompany(index, code) {
+    auditCompany(index, row) {
       // 二次确认删除
       this.$confirm('确定要通过审核吗？', '提示', {
         type: 'warning'
       }).then(() => {
-        adminApi.auditCompany(code).then((res) =>{
-          if(res === '审核成功'){
-            this.$message.success('审核成功');
+        adminApi.auditCompany(row.companyCode).then((res) =>{
+          if(res.code === 200) {
+            if (row.companyState === 1) {
+              row.companyState = 0;
+              this.$set(this.company, index, row);
+              this.$message.error("禁用成功");
+            } else {
+              row.companyState = 1;
+              this.$set(this.company, index, row);
+              this.$message.success("审核成功");
+            }
           }else
             this.$message.error("error")
         })
@@ -166,8 +167,9 @@ export default {
 
     // 编辑操作
     handleEdit(index, row) {
-      this.idx = index;
-      this.form = row;
+      console.log(row);
+      //this.idx = index;
+      this.detailInfo = row;
       this.editVisible = true;
     },
     // 分页导航

@@ -40,7 +40,7 @@
                   type="text"
                   icon="el-icon-delete"
                   class="red"
-                  @click="handleDelete(scope.$index, scope.row.userId)"
+                  @click="handleDelete(scope.$index, scope.row)"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -96,13 +96,13 @@
         });
       },
       // 删除操作
-      handleDelete(index, userId) {
+      handleDelete(index, row) {
         // 二次确认删除
         this.$confirm('确定要删除吗？', '提示', {
           type: 'warning'
         }).then(() => {
-          adminApi.deleteUser(userId).then((res) =>{
-            if(res === '删除成功'){
+          adminApi.deleteUser(row.userId).then((res) =>{
+            if(res.code === 200){
               this.$message.success('删除成功');
               this.tableData.splice(index, 1);
             }else
