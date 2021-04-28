@@ -3,27 +3,27 @@ import Router from 'vue-router'
 import Login from '../components/Login'
 import NotFound from "../components/404"
 import Upload from "@/components/Upload";
-import AdminUser from "@/components/AdminUser";
-import AdminCompany from "@/components/AdminCompany";
-import AdminHr from "@/components/AdminHr";
+import AdminUser from "@/components/admin/AdminUser";
+import AdminCompany from "@/components/admin/AdminCompany";
+import AdminHr from "@/components/admin/AdminHr";
 import UserRegister from "@/components/RegisterUser";
 import HrRegister from "@/components/RegisterHr";
-import CompanyRegister from "@/components/RegisterCompany";
-import AdminLogin from "@/components/AdminLogin";
-import AdminJob from "@/components/AdminJob";
+import CompanyRegister from "@/components/admin/RegisterCompany";
+import AdminLogin from "@/components/admin/AdminLogin";
+import AdminJob from "@/components/admin/AdminJob";
+import UserLogin from "@/components/UserLogin"
+import userIndex from "@/components/user/userIndex";
 Vue.use(Router)
 
-export default new Router({
-    mode: 'history',
-
+const router = new Router({
     routes: [
         {
-            path: '/',
-            component: () => import(/* webpackChunkName: "home" */ '../common/Home.vue'),
+            path: '/admin',
+            component: () => import(/* webpackChunkName: "home" */ '../components/admin/Home.vue'),
             meta: { title: '自述文件' },
             children: [
                 {
-                    path: "/adminUser",
+                    path: "user",
                     name: "管理用户",
                     meta: {
                         title: '管理用户'
@@ -31,7 +31,7 @@ export default new Router({
                     component: AdminUser
                 },
                 {
-                    path: "/adminHr",
+                    path: "hr",
                     name: "管理HR",
                     meta: {
                         title: '管理HR'
@@ -39,7 +39,7 @@ export default new Router({
                     component: AdminHr
                 },
                 {
-                    path: "/adminCompany",
+                    path: "company",
                     name: "管理公司",
                     meta: {
                         title: '管理公司'
@@ -47,7 +47,7 @@ export default new Router({
                     component: AdminCompany
                 },
                 {
-                    path: "/adminJob",
+                    path: "job",
                     name: "管理岗位",
                     meta: {
                         title: '管理岗位'
@@ -55,7 +55,7 @@ export default new Router({
                     component: AdminJob
                 },
                 {
-                    path: "/registerCompany",
+                    path: "registerCompany",
                     name: "注册公司",
                     meta: {
                         title: '注册公司'
@@ -82,6 +82,14 @@ export default new Router({
                 title: '管理员登录'
             },
             component: AdminLogin
+        },
+        {
+            path: "/userLogin",
+            name: "userLogin",
+            meta: {
+                title: '用户登录'
+            },
+            component: UserLogin
         },
         {
             path: "/userRegister",
@@ -117,8 +125,34 @@ export default new Router({
             component: Upload
         },
         {
+            path: "/",
+            name: "index",
+            meta:{
+                title: "主页"
+            },
+            component: userIndex
+        },
+        {
             path: '*',
             component: NotFound
         }
     ]
-})
+
+});
+// 路由守卫
+router.beforeEach((to, from, next) => {
+    if (to.path !== '/admin' ) {
+        next();
+    } else {
+        // 获取当前用户的令牌
+        let token = localStorage.getItem('token');
+        if (token === null || token === '') {
+            alert("登录已过期,请前往登录!")
+            next('/adminLogin');
+        } else {
+            next();
+        }
+    }
+});
+
+export default router;

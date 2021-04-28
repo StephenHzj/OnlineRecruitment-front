@@ -11,34 +11,7 @@
             router
         >
             <template v-for="item in items">
-                <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
-                        <template slot="title">
-                            <i :class="item.icon"></i>
-                            <span slot="title">{{ item.title }}</span>
-                        </template>
-                        <template v-for="subItem in item.subs">
-                            <el-submenu
-                                v-if="subItem.subs"
-                                :index="subItem.index"
-                                :key="subItem.index"
-                            >
-                                <template slot="title">{{ subItem.title }}</template>
-                                <el-menu-item
-                                    v-for="(threeItem,i) in subItem.subs"
-                                    :key="i"
-                                    :index="threeItem.index"
-                                >{{ threeItem.title }}</el-menu-item>
-                            </el-submenu>
-                            <el-menu-item
-                                v-else
-                                :index="subItem.index"
-                                :key="subItem.index"
-                            >{{ subItem.title }}</el-menu-item>
-                        </template>
-                    </el-submenu>
-                </template>
-                <template v-else>
+                <template>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon"></i>
                         <span slot="title">{{ item.title }}</span>
@@ -50,7 +23,7 @@
 </template>
 
 <script>
-import bus from '../common/bus';
+import bus from '../../common/bus';
 export default {
     data() {
         return {
@@ -58,27 +31,27 @@ export default {
             items: [
                 {
                     icon: 'el-icon-lx-home',
-                    index: 'user',
+                    index: '/admin/user',
                     title: '管理用户'
                 },
                 {
                     icon: 'el-icon-lx-cascades',
-                    index: 'hr',
+                    index: '/admin/hr',
                     title: '管理HR'
                 },
                 {
                     icon: 'el-icon-lx-copy',
-                    index: 'company',
+                    index: '/admin/company',
                     title: '管理公司'
                 },
               {
                 icon: 'el-icon-lx-copy',
-                index: 'job',
+                index: '/admin/job',
                 title: '管理岗位'
               },
                 {
                   icon: 'el-icon-lx-copy',
-                  index: 'company/register',
+                  index: '/admin/registerCompany',
                   title: '注册公司'
                 },
             ]
@@ -86,7 +59,7 @@ export default {
     },
     computed: {
         onRoutes() {
-            return this.$route.path.replace('/', '');
+          return this.$route.path.replace('/', '');
         }
     },
     created() {

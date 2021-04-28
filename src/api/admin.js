@@ -28,7 +28,7 @@ export const getAllUsers =() => {
 
 export const getPageUsers =(page) => {
     return request({
-        url: '/api/admin/user/'+page.pageIndex,
+        url: '/api/admin/user/page/'+page.pageIndex,
         method: 'get',
     });
 };
@@ -50,7 +50,7 @@ export const getAllCompanies =() => {
 
 export const getPageCompanies =(page) => {
     return request({
-        url: '/api/admin/company/' + page.pageIndex,
+        url: '/api/admin/company/page/' + page.pageIndex,
         method: 'get',
     });
 };
@@ -58,6 +58,13 @@ export const getPageCompanies =(page) => {
 export const getAllHrs =() => {
     return request({
         url: '/api/admin/hr',
+        method: 'get',
+    });
+};
+
+export const getAdminNameByTel =(tel) => {
+    return request({
+        url: '/api/admin/admin/'+tel,
         method: 'get',
     });
 };

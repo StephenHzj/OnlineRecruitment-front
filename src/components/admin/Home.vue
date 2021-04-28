@@ -18,14 +18,15 @@
 
 <script>
 import vHead from './Header.vue';
-import vSidebar from './Sidebar.vue';
+import vSidebar from './AdminSidebar';
 import vTags from './Tags.vue';
-import bus from './bus';
+import bus from '../../common/bus';
 export default {
     data() {
         return {
             tagsList: [],
-            collapse: false
+            collapse: false,
+            id:12
         };
     },
     components: {

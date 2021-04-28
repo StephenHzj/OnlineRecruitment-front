@@ -59,7 +59,7 @@
 
 import { regionData, CodeToText } from "element-china-area-data";
 
-import * as userApi from '../api/common'
+import * as userApi from '../../api/common'
 export default {
   name: "CompanyRegister",
   data() {
@@ -166,13 +166,7 @@ export default {
   display: block;
 }
 
-.login-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-image: url(../assets/img/login-bg.jpg);
-  background-size: 100%;
-}
+
 .ms-title {
   width: 100%;
   line-height: 50px;

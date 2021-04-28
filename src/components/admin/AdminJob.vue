@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import * as adminApi from "../api/admin";
+import * as adminApi from "../../api/admin";
 export default {
   name: 'AdminJob',
   data() {

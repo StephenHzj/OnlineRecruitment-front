@@ -36,5 +36,56 @@
             "thumb": "https://lin-xin.gitee.io/images/post/notice.png"
         }
     ],
+
+    "data": [
+        {
+            "jobId": 3,
+            "hrId": 1,
+            "companyId": 1,
+            "jobName": "文员",
+            "salary": "2000",
+            "introduction": "档案整理",
+            "requirement": "认真仔细",
+            "degree": "初中毕业",
+            "quantity": 100,
+            "location": "广东深圳",
+            "updateDate": "2021.02.10",
+            "jobState": 1,
+            "hrName": "张少刚",
+            "companyName": "江西随明教育科技有限公司"
+        },
+        {
+            "jobId": 4,
+            "hrId": 1,
+            "companyId": 1,
+            "jobName": "部门经理",
+            "salary": "6000",
+            "introduction": "项目运行",
+            "requirement": "有经验",
+            "degree": "本科毕业",
+            "quantity": 30,
+            "location": "广东广州",
+            "updateDate": "2021.03.12",
+            "jobState": 1,
+            "hrName": "张少刚",
+            "companyName": "江西随明教育科技有限公司"
+        },
+        {
+            "jobId": 5,
+            "hrId": 2,
+            "companyId": 2,
+            "jobName": "销售",
+            "salary": "4000",
+            "introduction": "卖店铺",
+            "requirement": "是人就行",
+            "degree": "初中毕业",
+            "quantity": 500,
+            "location": "北京",
+            "updateDate": "2021.03.19",
+            "jobState": 1,
+            "hrName": "刘博文",
+            "companyName": "南昌如梦教育咨询有限公司"
+        }
+    ],
     "pageTotal": 4
 }

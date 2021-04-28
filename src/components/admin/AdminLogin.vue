@@ -33,7 +33,7 @@
 
 <script>
 
-import * as userApi from "../api/common";
+import * as userApi from "../../api/common";
 export default {
     name:"adminLogin",
     data() {
@@ -56,19 +56,17 @@ export default {
     methods: {
        login() {
          userApi.login('/admin/login', this.admin).then((res)=>{
-           this.$message.success(res)
-           if(res === '登录成功') {
+           if(res.code === 200) {
+             this.$message.success("登录成功")
              console.log("跳转");
-             localStorage.setItem('adminName', this.admin.adminTel);
-             this.$router.push('/');
+             localStorage.setItem('token',res.message);
+             localStorage.setItem('adminTel', this.admin.adminTel);
+             this.$router.push('/admin');
            }
          }).catch((res)=>{
            this.$message.error(res)
          })
        },
-
-
-
       }
 };
 </script>
@@ -78,7 +76,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background-image: url(../assets/img/login-bg.jpg);
+    background-image: url(/src/assets/img/login-bg.jpg);
     background-size: 100%;
 }
 .ms-title {
