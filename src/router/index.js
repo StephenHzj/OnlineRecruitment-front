@@ -12,10 +12,12 @@ import CompanyRegister from "@/components/admin/RegisterCompany";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AdminJob from "@/components/admin/AdminJob";
 import UserLogin from "@/components/user/UserLogin"
-import UserIndex from "@/components/user/UserIndex";
 import Resume from "@/components/user/Resume";
-import IndexHead from "@/components/user/IndexHead";
+
 import JobDetail from "@/components/user/JobDetail";
+import UserIndex from "@/components/user/UserIndex";
+import Application from "@/components/user/Application";
+import UserInfo from "@/components/user/UserInfo";
 Vue.use(Router)
 
 const router = new Router({
@@ -71,9 +73,10 @@ const router = new Router({
         },
         {
             path: '/user',
-            component: () => import(/* webpackChunkName: "home" */ '../components/user/IndexHome'),
+            component: () => import(/* webpackChunkName: "home" */ '../components/user/Index'),
             meta: { title: '自述文件' },
             children: [
+
                 {
                     path: "index",
                     name: "主页",
@@ -83,12 +86,28 @@ const router = new Router({
                     component: UserIndex
                 },
                 {
+                    path: "info",
+                    name: "个人信息",
+                    meta: {
+                        title: '个人信息'
+                    },
+                    component: UserInfo
+                },
+                {
                     path: "resume",
                     name: "用户简历",
                     meta: {
                         title: '用户简历'
                     },
                     component: Resume
+                },
+                {
+                    path: "application",
+                    name: "申请列表",
+                    meta: {
+                        title: "申请列表"
+                    },
+                    component: Application
                 },
                 {
                     path: "/job/:jobId",
@@ -159,14 +178,7 @@ const router = new Router({
             },
             component: Upload
         },
-        {
-            path: "/head",
-            name: "indexHead",
-            meta:{
-                title: "主页"
-            },
-            component: IndexHead
-        },
+
         {
             path: '*',
             component: NotFound

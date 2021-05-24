@@ -14,9 +14,9 @@
 
 <script>
 import bus from '../../common/bus';
-import uHead from '../user/IndexHead'
+import uHead from './Head'
 export default {
-  name:"IndexHome",
+  name:"Index",
   data() {
     return {
       tagsList: [],

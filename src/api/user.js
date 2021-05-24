@@ -14,14 +14,18 @@ export const getJobInfo = () => {
 
 export const getResumeData = (userId) => {
     return request({
-        url: '/api/user/resume/'+userId,
+        url: '/api/user/'+userId+'/resume/',
         method: 'get',
     });
 }
 
+export const updateResume = (params) => {
+    return http.requestPost('/api/resume/update',params)
+}
+
 export const getUserInfo = (userTel) => {
     return request({
-        url: '/api/user/resume/'+userId,
+        url: '/api/user/info/'+userTel,
         method: 'get',
     });
 }
@@ -33,6 +37,20 @@ export const register = (url, params) => {
 export const getJobDetail = (jobId) => {
     return request({
         url: '/api/job/'+jobId,
+        method: 'get',
+    });
+}
+
+
+export const applicationJob = (params) => {
+    return http.requestPost('/api/app/job',params)
+}
+
+
+
+export const getAppList = (userTel) => {
+    return request({
+        url: '/api/'+userTel+'/show/app',
         method: 'get',
     });
 }

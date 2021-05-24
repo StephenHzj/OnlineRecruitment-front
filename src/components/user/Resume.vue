@@ -1,11 +1,13 @@
 <template >
-  <el-form :model="resume" status-icon :rules="rules" ref="companyRegister" label-width="100px" class="demo-ruleForm">
+  <el-form :model="resume" status-icon  ref="companyRegister" label-width="100px" class="demo-ruleForm">
     <el-form-item label="真实姓名" prop="realName">
       <el-input v-model="resume.realName"></el-input>
     </el-form-item>
-    <el-form-item label="性别" prop="sex">
-      <el-radio v-model="resume.sex" label='1' >男</el-radio>
-      <el-radio v-model="resume.sex" label='0' >女</el-radio>
+    <el-form-item label="性别" prop="sex" >
+      <el-radio-group v-model="resume.sex">
+        <el-radio-button label="1">男</el-radio-button>
+        <el-radio-button label="0">女</el-radio-button>
+      </el-radio-group>
     </el-form-item>
 
     <el-form-item label="生日" prop="birthday">
@@ -55,7 +57,7 @@
 
 
     <el-form-item>
-      <el-button type="primary" @click="register()">注册</el-button>
+      <el-button type="primary" @click="updateResume()">更新简历</el-button>
       <el-button @click="resetForm('companyRegister')">重置</el-button>
     </el-form-item>
   </el-form>
@@ -89,12 +91,24 @@ export default {
     this.getResumeData();
   },
   methods:{
+    updateResume(){
+      userApi.updateResume(this.resume).then(res => {
+        if(res.code === 200){
+          this.$notify({
+            title: '更新成功',
+            message: '简历更新成功',
+            type: 'success'
+          });
+        }
+      })
+    },
     getResumeData(){
-      userApi.getResumeData(2).then(res => {
+      let userTel = localStorage.getItem("userTel")
+      userApi.getResumeData(userTel).then(res => {
         if(res.code === 200){
           this.resume = res.data;
           this.$message.success("查询成功");
-          console.log(this.resume)
+          console.log(res.data)
         }else {
           this.$message.error("错误")
         }

@@ -53,7 +53,6 @@ export default {
                 this.$router.push('/');
               }else {
                 this.$message.error('请输入正确账号和密码');
-                console.log('error submit!!');
                 return false;
               }
             })

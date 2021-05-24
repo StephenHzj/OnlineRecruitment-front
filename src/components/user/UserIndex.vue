@@ -26,20 +26,20 @@
 <!--    </el-header>-->
 
     <el-main >
-      <el-row :gutter="20">
-        <el-col :span="12" :offset="6">
-          <div class="block">
-            <el-carousel height="250px">
-              <el-carousel-item v-for="item in imgData" :key="item">
-                <el-image
-                    style="width:100%; height: 100%"
-                    :src="item.src"
-                    ></el-image>
-              </el-carousel-item>
-            </el-carousel>
-          </div>
-        </el-col>
-      </el-row>
+<!--      <el-row :gutter="20">-->
+<!--        <el-col :span="12" :offset="6">-->
+<!--          <div class="block">-->
+<!--            <el-carousel height="250px">-->
+<!--              <el-carousel-item v-for="item in imgData" :key="item">-->
+<!--                <el-image-->
+<!--                    style="width:100%; height: 100%"-->
+<!--                    :src="item.src"-->
+<!--                    ></el-image>-->
+<!--              </el-carousel-item>-->
+<!--            </el-carousel>-->
+<!--          </div>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
 
       <div class="content-title">
         热门岗位
@@ -115,7 +115,6 @@ export default {
     jobDetail(jobId){
       this.$router.push( { name: 'jobDetail', params: { jobId: jobId }})
       // this.$router.push("/user/job/"+jobId,)
-
     }
   }
 

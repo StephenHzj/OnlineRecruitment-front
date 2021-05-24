@@ -61,7 +61,7 @@ export default {
                localStorage.setItem('userTel', this.user.userTel);
                localStorage.setItem('userName', res.data.userName)
                localStorage.setItem('userLogo', res.data.userLogo)
-               this.$router.push('/head');
+               this.$router.push('/user/index');
              }
            }).catch((res) => {
              this.$message.error(res)

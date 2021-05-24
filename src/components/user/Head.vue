@@ -1,11 +1,11 @@
 <template>
-  <el-menu  class="el-menu-demo" :default-active="activeIndex"  mode="horizontal" @select="handleSelect">
+  <el-menu  class="el-menu-demo" :default-active="activeIndex"  mode="horizontal" @select="handlePush" >
     <el-menu-item >
       <el-image class="logo" :src="require('../../assets/index.png')"></el-image>
     </el-menu-item>
-    <el-menu-item index="1">首页</el-menu-item>
-    <el-menu-item index="2">职位列表</el-menu-item>
-    <el-menu-item index="3">我的申请</el-menu-item>
+
+    <el-menu-item index="/user/index">首页</el-menu-item>
+    <el-menu-item index="/user/application">我的申请</el-menu-item>
     <el-col :span="1" offset="13" >
     <el-menu-item  index="3">
       <el-avatar >
@@ -23,7 +23,7 @@
     <el-submenu  index="2">
       <template  slot="title">个人中心</template>
       <el-menu-item index="2-1">个人信息</el-menu-item>
-      <el-menu-item index="2-2">我的简历</el-menu-item>
+      <el-menu-item index="/user/resume">我的简历</el-menu-item>
     </el-submenu>
   </el-menu>
 </template>
@@ -31,7 +31,7 @@
 <script>
 import * as userApi from "../../api/user"
 export default {
-  name: "IndexHead",
+  name: "Head",
   data() {
     return {
       user:{
@@ -46,7 +46,8 @@ export default {
     this.getUserInfo();
   },
   methods: {
-    handleSelect(key, keyPath) {
+    handlePush(key, keyPath) {
+      this.$router.push(key);
       console.log(key, keyPath);
     },
     getUserInfo(){
