@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="16" offset="4">
+<!--    <el-row :gutter="20">-->
+<!--      <el-col :span="18" offset="4">-->
         <el-table
             :data="AppData"
             style="width: 100%"
@@ -38,8 +38,8 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-col>
-    </el-row>
+<!--      </el-col>-->
+<!--    </el-row>-->
   </div>
 
 </template>

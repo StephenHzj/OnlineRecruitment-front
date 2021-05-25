@@ -1,12 +1,12 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="16" offset="4">
+<!--  <el-row :gutter="20">-->
+<!--    <el-col :span="16" offset="4">-->
       <div class="grid-content bg-purple">
         <el-card :data="job" class="box-card">
           <div slot="header" style="height: 140px" class="clearfix">
             <el-image
                 style="float: right; width: 120px; height: 120px"
-                :src="getComLogo(job.conpanyLogo)"
+                :src="getComLogo(job.company.companyLogo)"
                 :fit="fit"></el-image>
             <div>
             <h1>{{job.company.companyName}}</h1>
@@ -21,11 +21,16 @@
           </div>
 
           <div class="item-content-body">
+            <el-divider content-position="left" >
+              <span style="font-weight: bolder;font-size: 20px">
+                 HR简介
+              </span>
+            </el-divider>
             <div class="hr-logo" >
                   <el-avatar style="float: right" :size="60" :src="getHrLogo(job.hr.hrLogo)"></el-avatar>
             </div>
             <div>
-              <h3>{{job.hr.hrName}}</h3>
+              <h3 class="item-left-top-left">{{job.hr.hrName}}</h3>
             </div>
             <div class="item-content">
               <span>联系方式：{{job.hr.hrEmail}}</span>
@@ -34,8 +39,11 @@
               <span>个人简介：{{job.hr.hrProfile}}</span>
 
             </div>
-            <hr style="margin: 20px 0">
-
+            <el-divider content-position="left" >
+              <span style="font-weight: bolder;font-size: 20px">
+                 工作详情
+              </span>
+            </el-divider>
             <div>
             <div class="item-left-top" >
               <h2 class="item-left-top-left">{{job.jobName }}</h2>
@@ -57,8 +65,8 @@
 
         </el-card>
       </div>
-    </el-col>
-  </el-row>
+<!--    </el-col>-->
+<!--  </el-row>-->
 </template>
 
 <script>
@@ -88,6 +96,7 @@ export default {
     getComLogo (img) {
 
       try {
+        console.log(img)
         let url = require("@/assets/logo/company/" + img);
         return url;
       }catch (e){
@@ -98,7 +107,6 @@ export default {
 
     //获取图片URL
     getHrLogo (img) {
-
       try {
         let url = require("@/assets/logo/hr/" + img);
         return url;

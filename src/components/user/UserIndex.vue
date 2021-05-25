@@ -1,45 +1,20 @@
 <template>
   <el-container>
-<!--    <el-header >-->
-<!--        <el-row type="flex" align="middle">-->
-<!--          <el-col :span="2">-->
-<!--              <el-image style="height:70px;width: 70px" :src="require('../../assets/index.png')"></el-image>-->
-<!--          </el-col >-->
-<!--          <el-col :span="2" offset="16" >-->
-<!--            <span >qiuzhizhe</span>-->
-<!--            <el-avatar >user</el-avatar>-->
-<!--          </el-col>-->
-<!--          <el-col :span="2" >-->
-<!--            <el-dropdown>-->
-<!--              <span class="el-dropdown-link">-->
-<!--                下拉菜单<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--              </span>-->
-<!--            <el-dropdown-menu slot="dropdown">-->
-<!--              <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">-->
-<!--                <el-dropdown-item>项目仓库</el-dropdown-item>-->
-<!--              </a>-->
-<!--              <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>-->
-<!--            </el-dropdown-menu>-->
-<!--            </el-dropdown>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--    </el-header>-->
-
     <el-main >
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="12" :offset="6">-->
-<!--          <div class="block">-->
-<!--            <el-carousel height="250px">-->
-<!--              <el-carousel-item v-for="item in imgData" :key="item">-->
-<!--                <el-image-->
-<!--                    style="width:100%; height: 100%"-->
-<!--                    :src="item.src"-->
-<!--                    ></el-image>-->
-<!--              </el-carousel-item>-->
-<!--            </el-carousel>-->
-<!--          </div>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
+      <el-row :gutter="20">
+        <el-col :span="16" :offset="0">
+          <div class="block">
+            <el-carousel height="250px">
+              <el-carousel-item v-for="item in imgData" :key="item">
+                <el-image
+                    style="width:100%; height: 100%"
+                    :src="item.src"
+                    ></el-image>
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </el-col>
+      </el-row>
 
       <div class="content-title">
         热门岗位
@@ -62,10 +37,10 @@
               <span>{{job.degree+"|"+job.location}}</span>
             </div>
             <div class="item-content">
-              <span>{{"工作介绍："+job.introduction}}</span>
+              <span>{{"工作介绍："+job.introduction|textLimit}}</span>
             </div>
             <div class="item-content">
-              <span>{{"工作要求："+job.requirement}}</span>
+              <span>{{"工作要求："+job.requirement|textLimit}}</span>
             </div>
             </div>
           </el-card>
@@ -85,6 +60,15 @@ import vSidebar from "@/components/admin/AdminSidebar";
 import vTags from "@/components/admin/Tags";
 export default {
   name: "userIndex",
+  filters: {//限制文本显示字数,超出部分用...代替
+    textLimit (value) {
+      if (!value) return ''
+      if (value.length > 20) {
+        return value.slice(0,20) + '...'//0:下标,从第一个字开始显示,50:显示字数,多余用...代替
+      }
+      return value
+    }
+  },
   data(){
     return {
       logoUrl: require('../../assets/index.png'),
@@ -137,7 +121,7 @@ export default {
 }
 
 .box-card {
-  width: 480px;
+  width: 350px;
 }
 
 .el-dropdown-link {
@@ -161,6 +145,7 @@ export default {
   padding: 10px 20px;
 }
 .content-title {
+  padding-top: 20px;
   border-bottom: 2px solid #63d4c7;
   padding-bottom: 10px
 }
