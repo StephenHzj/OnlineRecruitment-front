@@ -7,7 +7,8 @@
 
     <el-menu-item index="/user/index">首页</el-menu-item>
     <el-menu-item index="/user/application">我的申请</el-menu-item>
-    <el-col :span="1" offset="12" >
+    <el-menu-item index="/user/job">岗位列表</el-menu-item>
+    <el-col :span="1" offset="10" >
       <el-avatar style="width: 50px;height: 50px;margin-top: 5px">
         <img v-model="user.userLogo" :src="getImgUrl(user.userLogo)"/>
         user

@@ -15,7 +15,6 @@
           </div>
         </el-col>
       </el-row>
-
       <div class="content-title">
         热门岗位
       </div>
@@ -87,7 +86,7 @@ export default {
     }
   },
   components: {
-    vtest,
+
   },
   created(){
     userApi.getJobInfo().then((res) => {

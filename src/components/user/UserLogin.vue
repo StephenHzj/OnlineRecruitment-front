@@ -7,13 +7,13 @@
               <el-button style="float: right; padding: 3px 0" type="text" @click="toRegister">去注册...</el-button>
             </div>
             <div  class="text item">
-              <el-form :model="user" status-icon :rules="rules" ref="login" label-width="60px" class="demo-ruleForm">
+              <el-form :model="form" status-icon :rules="rules" ref="login" label-width="60px" class="demo-ruleForm">
                 <el-form-item label="账号" prop="userTel">
-                  <el-input v-model="user.userTel"></el-input>
+                  <el-input v-model="form.tel"></el-input>
                 </el-form-item>
 
                 <el-form-item label="密码" prop="userPassword">
-                  <el-input type="password" v-model="user.userPassword" autocomplete="off"></el-input>
+                  <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -34,15 +34,15 @@ export default {
     name:"userLogin",
     data() {
         return {
-            user: {
-              userTel: "",
-              userPassword: ""
+          form: {
+              tel: "",
+              password: ""
             },
             rules: {
-              userTel: [
+              tel: [
                     { required: true, message: "请输入用户名", trigger: "blur" }
                 ],
-              userPassword: [
+              password: [
                     { required: true, message: "请输入密码", trigger: "blur" }
                 ]
             }
@@ -51,17 +51,21 @@ export default {
 
     methods: {
        login() {
-         if (this.user.userTel === "" || this.user.userPassword === "")
+         if (this.form.tel === "" || this.form.password === "")
            this.$message.error("请输入账号密码")
          else {
-           userApi.login('/user/login', this.user).then((res) => {
-             if (res.code === 200) {
-               this.$message.success("登录成功")
+           userApi.login('/login', this.form.tel,this.form.password).then((res) => {
+             if (res.code === 200 && res.message ==="用户登录成功") {
+               this.$message.success("用户登录成功")
                console.log("跳转");
-               localStorage.setItem('userTel', this.user.userTel);
+               localStorage.setItem('userTel', this.form.tel);
                localStorage.setItem('userName', res.data.userName)
                localStorage.setItem('userLogo', res.data.userLogo)
                this.$router.push('/user/index');
+             }else if(res.code === 200 && res.message === "HR登录成功") {
+               this.$message.success("HR登录成功")
+             }else {
+               this.$message.error("账号不存在")
              }
            }).catch((res) => {
              this.$message.error(res)

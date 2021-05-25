@@ -14,7 +14,7 @@
           <el-input v-model="user.userName"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="userPassword">
-          <el-input type="password" v-model="user.userPassword" autocomplete="off"></el-input>
+          <el-input  v-model="user.userPassword" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="userEmail">
           <el-input v-model="user.userEmail"></el-input>
@@ -42,14 +42,15 @@
               action="/api/user/logo/upload"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              :before-upload="beforeAvatarUpload"
+              :data="uploadData">
+            <img v-if="imageUrl" :src="getImgUrl(this.imageUrl)" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="register()">修改信息</el-button>
+          <el-button type="primary" @click="updateInfo()">修改信息</el-button>
         </el-form-item>
 
       </el-form>
@@ -74,6 +75,9 @@ export default {
         userEmail: "",
         userBirth: "",
       },
+      uploadData:{
+        userTel:""
+      },
       imageUrl:"",
     }
   },
@@ -87,16 +91,48 @@ export default {
       userApi.getUserInfo(userTel).then(res => {
         if(res.code === 200 ){
           this.user = res.data;
+          this.imageUrl = res.data.userLogo
+        }
+      })
+    },
+    //获取图片URL
+    getImgUrl (imgUrl) {
+      try {
+        let url = require("@/assets/logo/user/" + imgUrl);
+        return url;
+      }catch (e){
+        return require("@/assets/logo/user/default.jpg" );
+      }
+
+    },
+    updateInfo(){
+      userApi.updateInfo(this.user).then(res => {
+        if(res.code === 200){
+          this.$notify({
+            title: '更新成功',
+            message: '您已成功更新个人信息',
+            type: 'success'
+          });
+        }else {
+          this.$notify({
+            title: '更新失败',
+            message: '更新失败',
+            type: 'error'
+          });
         }
       })
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl =res.data;
+      //this.imageUrl = URL.createObjectURL(file.raw);
       console.log(this.imageUrl);
-      console.log(file.name)
-      this.company.companyLogo =res.data
+      console.log(res.data)
+      this.user.userLogo =res.data;
+      this.$router.go(0);
     },
     beforeAvatarUpload(file) {
+      //赋值参数
+      this.uploadData.userTel =this.user.userTel;
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!');
@@ -106,6 +142,7 @@ export default {
     handleRemove() {
       this.imageUrl = ''
     },
+
 
   }
 }

@@ -130,6 +130,13 @@ export default {
         }
         if(res.code === 503){
           this.$notify({
+            title: '请勿重复投递',
+            dangerouslyUseHTMLString: true,
+            message: "请耐心等待"
+          });
+        }
+        else {
+          this.$notify({
             title: '投递失败',
             dangerouslyUseHTMLString: true,
             message: "<router-link :to='{ path: 'relative/path'}' append> 填写简历</router-link>"

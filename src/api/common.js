@@ -2,17 +2,17 @@ import http from '../common/public'
 // import queryString from 'querystring'
 
 //用户登录
-export const login = (url, params) => {
-    return http.requestPost('/api'+url,params)
-}
+// export const loginn = (url, params) => {
+//     return http.requestPost('/api'+url,params)
+// }
 
 export const register = (url, params) => {
     return http.requestPost('/api'+url,params)
 }
 
-// export const loginn = (url,userName,  userPassword, abc, id) => {
-//     return http.requestPost('/api'+url+"/"+id+"?userName="+userName+"&userPassword="+userPassword)
-// }
+export const login = (url,tel,password) => {
+    return http.requestPost('/api'+url+"/"+"?tel="+tel+"&password="+password)
+}
 
 // export const loginn = (url,params) => {
 //     let s = queryString.stringify(params);

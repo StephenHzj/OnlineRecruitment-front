@@ -34,7 +34,7 @@
             <template slot-scope="scope">
               <el-tag
                   :type="scope.row.applicationState === 1?'success':(scope.row.applicationState=== -1?'danger':'info')"
-              >{{scope.row.companyState === 1? '已通过' : (scope.row.companyState === -1 ? '已拒绝':'未审核')}}</el-tag>
+              >{{scope.row.applicationState === 1? '已通过' : (scope.row.applicationState === -1 ? '已拒绝':'未审核')}}</el-tag>
             </template>
           </el-table-column>
         </el-table>

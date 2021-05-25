@@ -18,6 +18,8 @@ import JobDetail from "@/components/user/JobDetail";
 import UserIndex from "@/components/user/UserIndex";
 import Application from "@/components/user/Application";
 import UserInfo from "@/components/user/UserInfo";
+import Register from "@/components/Register";
+import JobList from "@/components/user/JobList";
 Vue.use(Router)
 
 const router = new Router({
@@ -110,6 +112,14 @@ const router = new Router({
                     component: Application
                 },
                 {
+                    path: "job",
+                    name: "岗位列表",
+                    meta: {
+                        title: "岗位列表"
+                    },
+                    component: JobList
+                },
+                {
                     path: "/job/:jobId",
                     name: "jobDetail",
                     meta: {
@@ -137,29 +147,12 @@ const router = new Router({
             component: AdminLogin
         },
         {
-            path: "/userLogin",
-            name: "userLogin",
+            path: "/register",
+            name: "register",
             meta: {
-                title: '用户登录'
+                title: '注册'
             },
-            component: UserLogin
-        },
-
-        {
-            path: "/userRegister",
-            name: "UserRegister",
-            meta: {
-                title: '用户注册'
-            },
-            component: UserRegister
-        },
-        {
-            path: "/hrRegister",
-            name: "hrRegister",
-            meta: {
-                title: 'HR注册'
-            },
-            component: HrRegister
+            component: Register
         },
         {
             path: "/companyRegister",
@@ -169,7 +162,6 @@ const router = new Router({
             },
             component: CompanyRegister
         },
-
         {
             path: "/upload",
             name: "upload",

@@ -23,6 +23,10 @@ export const updateResume = (params) => {
     return http.requestPost('/api/resume/update',params)
 }
 
+export const updateInfo = (params) => {
+    return http.requestPost('/api/user/info/update',params)
+}
+
 export const getUserInfo = (userTel) => {
     return request({
         url: '/api/user/info/'+userTel,
@@ -51,6 +55,13 @@ export const applicationJob = (params) => {
 export const getAppList = (userTel) => {
     return request({
         url: '/api/'+userTel+'/show/app',
+        method: 'get',
+    });
+}
+
+export const getJobList = () => {
+    return request({
+        url: '/api/job',
         method: 'get',
     });
 }
